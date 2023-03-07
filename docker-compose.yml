@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  db_apigolang:
+    image: mysql/mysql-server:5.7
+    restart: always
+    environment:
+      - "MYSQL_ALLOW_EMPTY_PASSWORD=yes"
+      - "MYSQL_USER=${MYSQL_USER}"
+      - "MYSQL_PASSWORD=${MYSQL_PASSWORD}"
+      - "MYSQL_DATABASE=${MYSQL_DBNAME}"
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data:/var/lib/mysql
+
+  web_apigolang:
+    image: apigolangtodo:0.1
+    build: .
+    depends_on:
+      - db_apigolang
+    restart: always
+    entrypoint: 
+      [
+        "/app/wait-for.sh",
+        "db_apigolang:3306",
+        "--",
+        "/app/appcontainer.sh"
+
+      ]
+    ports:
+      - "3030:3030"
+    command: ["/app/main"]
