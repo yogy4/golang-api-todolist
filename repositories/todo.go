@@ -34,7 +34,7 @@ func (t todoRepository) CreateTodo(todo entities.Todo) (entities.Todo, error) {
 func (t todoRepository) GetAllTodos(id int) ([]entities.Todo, error) {
 	log.Print("[TodoRepository]...GetAllTodos")
 	var todos []entities.Todo
-	err := t.DB.Find(&todos).Where("activity_group_id = ? ", id).Error
+	err := t.DB.Find(&todos, "activity_group_id = ?", id).Error
 	return todos, err
 
 }

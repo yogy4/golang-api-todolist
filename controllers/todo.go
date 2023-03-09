@@ -67,7 +67,8 @@ func (t todoController) DeleteTodo(c *gin.Context) {
 func (t todoController) GetAlltodos(c *gin.Context) {
 	// panic("unimplemented")
 	log.Print("[TodoController]...Get all todos")
-	activitygroup := c.Param("activity_group_id")
+	// activitygroup := c.Params.ByName("activity_group_id")
+	activitygroup := c.Query("activity_group_id")
 	id, _ := strconv.Atoi(activitygroup)
 	todos, err := t.todoService.GetAllTodos(id)
 	if err != nil {
